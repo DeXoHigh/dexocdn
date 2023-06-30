@@ -19,7 +19,7 @@ To use **DeXoCDN** in your Node.js project, follow these steps:
 2. Clone the Dexo CDN repository from GitHub:
 
 ```bash
-git clone https://github.com/your-username/dexo-cdn.git
+git clone https://github.com/DeXoHigh/dexocdn.git
 ```
 
 3. Navigate to the project directory:
