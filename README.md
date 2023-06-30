@@ -1,4 +1,4 @@
-# DeXo CDN
+# DeXo CDN [![CodeFactor](https://www.codefactor.io/repository/github/dexohigh/dexocdn/badge)](https://www.codefactor.io/repository/github/dexohigh/dexocdn)
 
 <img src="./public/images/DeXoCDN.png" width="100%">
 
