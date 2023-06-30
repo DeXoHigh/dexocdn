@@ -3,7 +3,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build": "uglifyjs server.js -o server.min.js",
-    "test": "node server.min.js"
+    "test": "node server.min.js",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "-": "^0.0.1",
