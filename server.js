@@ -36,6 +36,7 @@ const ImageSchema = new Schema({
   filename: String,
   loaded: String,
   expires: Number,
+  userip: String
 });
 
 const JsSchema = new Schema({
@@ -44,6 +45,7 @@ const JsSchema = new Schema({
   filename: String,
   loaded: String,
   expires: Number,
+  userip: String
 });
 
 // Middleware
@@ -94,12 +96,14 @@ app.get("/images/*", async (req, res) => {
     const endtime = new Date().getTime();
     const Image = mongoose.model("Image", ImageSchema);
     const loadtime = endtime - starttime;
+    const userip = getRealIp(req);
     const image = new Image({
       url: req.url,
       time: starttime,
       filename: path.basename(filePath),
       loaded: units(loadtime),
       expires: endtime + 31536000000,
+      userip: userip
     });
     image.save();
   }
@@ -131,12 +135,14 @@ app.get("/js/*", async (req, res) => {
     const endtime = new Date().getTime();
     const Js = mongoose.model("Js", JsSchema);
     const loadtime = endtime - starttime;
+    const userip = getRealIp(req);
     const js = new Js({
       url: req.url,
       time: starttime,
       filename: path.basename(filePath),
       loaded: units(loadtime),
       expires: endtime + 31536000000,
+      userip: userip
     });
     js.save();
   }
@@ -174,4 +180,15 @@ app.listen(port, () => {
   setTimeout(() => {
     console.log(`Server listening on port ${process.env.PORT}`);
   }, 1000);
+});
+
+// Get real ip
+function getRealIp(req) {
+  return req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+}
+
+// Error handler
+process.on("uncaughtException", (err) => {
+  console.log(err);
+  process.exit(1);
 });
