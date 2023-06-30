@@ -2,7 +2,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "uglifyjs server.js -o server.min.js"
+    "build": "uglifyjs server.js -o server.min.js",
+    "test": "node server.min.js"
   },
   "dependencies": {
     "-": "^0.0.1",
