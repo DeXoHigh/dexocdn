@@ -13,9 +13,11 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const app = express();
+const port = process.env.PORT || 3000;
+const useMongoDB = process.env.USE_MOGO_DB || false;
 
 // Mongoose connection
-if (process.env.USE_MOGO_DB === "true") {
+if (useMongoDB === "true") {
   mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -88,7 +90,7 @@ app.get("/images/*", async (req, res) => {
   const optimizedFilePath = await optimizeImage(filePath);
   cache.put(req.url, optimizedFilePath);
   res.sendFile(optimizedFilePath);
-  if (process.env.USE_MOGO_DB === "true") {
+  if (useMongoDB === "true") {
     const endtime = new Date().getTime();
     const Image = mongoose.model("Image", ImageSchema);
     const loadtime = endtime - starttime;
@@ -125,7 +127,7 @@ app.get("/js/*", async (req, res) => {
   }
 
   res.send(result.code);
-  if (process.env.USE_MOGO_DB === "true") {
+  if (useMongoDB === "true") {
     const endtime = new Date().getTime();
     const Js = mongoose.model("Js", JsSchema);
     const loadtime = endtime - starttime;
@@ -142,7 +144,7 @@ app.get("/js/*", async (req, res) => {
 
 // Status - for monitoring
 app.get("/status", async (req, res) => {
-  if (process.env.USE_MOGO_DB === "true") {
+  if (useMongoDB === "true") {
     const Image = mongoose.model("Image", ImageSchema);
     const Js = mongoose.model("Js", JsSchema);
     const images = await Image.find({}).sort({ time: -1 }).lean();
@@ -167,7 +169,7 @@ async function optimizeImage(filePath) {
 }
 
 // Start server
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
   console.log(`Loading config from .env file`);
   setTimeout(() => {
     console.log(`Server listening on port ${process.env.PORT}`);
